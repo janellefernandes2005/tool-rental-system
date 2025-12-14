@@ -1,0 +1,531 @@
+{
+  "admin": {
+    "email": "admin@rentalhub.com",
+    "password": "admin123",
+    "role": "admin",
+    "name": "System Administrator"
+  },
+  "users": [
+    {
+      "id": 1,
+      "email": "abc@gmail.com",
+      "password": "123456",
+      "role": "user",
+      "name": "abc",
+      "joinedDate": "2025-11-20T03:22:43.331Z"
+    },
+    {
+      "id": 2,
+      "email": "janelle.fernandes2005@gmail.com",
+      "password": "9876",
+      "role": "user",
+      "name": "janelle.fernandes2005",
+      "joinedDate": "2025-11-20T03:28:56.338Z"
+    },
+    {
+      "id": 3,
+      "email": "123janelle4001@sjcem.edu.in",
+      "password": "uaggsbvsfsfs",
+      "role": "user",
+      "name": "123janelle4001",
+      "joinedDate": "2025-11-20T03:43:35.457Z"
+    },
+    {
+      "id": 4,
+      "email": "admin@rentalhub.com",
+      "password": "admin123",
+      "role": "user",
+      "name": "admin",
+      "joinedDate": "2025-11-20T05:19:50.691Z"
+    },
+    {
+      "id": 5,
+      "email": "janellefernandes578@gmail.com",
+      "password": "soham123",
+      "role": "user",
+      "name": "janellefernandes578",
+      "joinedDate": "2025-11-20T05:58:49.623Z"
+    },
+    {
+      "id": 6,
+      "email": "xyz@gmail.com",
+      "password": "67543",
+      "role": "user",
+      "name": "xyz",
+      "joinedDate": "2025-11-20T06:08:42.926Z"
+    },
+    {
+      "id": 7,
+      "email": "tys@gmail.com",
+      "password": "12346w4wfw",
+      "role": "user",
+      "name": "tys",
+      "joinedDate": "2025-12-14T07:49:56.244Z"
+    }
+  ],
+  "tools": [
+    {
+      "id": "electric-drill",
+      "name": "Electric Drill Machine",
+      "price": 90,
+      "quantity": 10,
+      "rented": 8,
+      "available": 2,
+      "description": "Compact 500W drill for home repairs and DIY tasks.",
+      "specs": {
+        "power": "N/A",
+        "rpm": "N/A",
+        "weight": "N/A",
+        "condition": "New"
+      },
+      "beforeImage": "2e5bbfb2-f0de-4078-9754-d2696fbd2e7b-removebg-preview.png"
+    },
+    {
+      "id": "claw-hammer",
+      "name": "Claw Hammer",
+      "price": 15,
+      "quantity": 4,
+      "rented": 0,
+      "available": 4,
+      "description": "Lightweight hammer for carpentry and repair",
+      "specs": {
+        "power": "N/A",
+        "rpm": "N/A",
+        "weight": "N/A",
+        "condition": "New"
+      },
+      "beforeImage": "Claw_hammer-removebg-preview.png"
+    },
+    {
+      "id": "screwdriver-set",
+      "name": "Screwdriver Set (12-in-1)",
+      "beforeImage": "S4090-0012-removebg-preview.png",
+      "price": 30,
+      "quantity": 8,
+      "rented": 0,
+      "available": 8,
+      "description": "Multi-bit screwdriver kit for electronics and furniture.",
+      "specs": {
+        "power": "N/A",
+        "rpm": "12 bits",
+        "weight": "Magnetic tip",
+        "condition": "Excellent"
+      }
+    },
+    {
+      "id": "adjustable-wrench",
+      "name": "Adjustable Wrench (Small)",
+      "beforeImage": "Adjustable_wrench-removebg-preview.png",
+      "price": 20,
+      "quantity": 6,
+      "rented": 0,
+      "available": 6,
+      "description": "Small spanner for tightening and loosening nuts.",
+      "specs": {
+        "power": "N/A",
+        "rpm": "6-inch size",
+        "weight": "20mm jaw",
+        "condition": "Good"
+      }
+    },
+    {
+      "id": "pliers-set",
+      "name": "Pliers Set",
+      "beforeImage": "Pliers_set1-removebg-preview.png",
+      "price": 25,
+      "quantity": 7,
+      "rented": 0,
+      "available": 7,
+      "description": "Cutting plier + long nose plier combo.",
+      "specs": {
+        "power": "N/A",
+        "rpm": "Insulated grip",
+        "weight": "Carbon steel",
+        "condition": "Excellent"
+      }
+    },
+    {
+      "id": "measuring-tape",
+      "name": "Measuring Tape (5m)",
+      "beforeImage": "Measuring_tape-removebg-preview.png",
+      "price": 10,
+      "quantity": 10,
+      "rented": 0,
+      "available": 10,
+      "description": "Durable tape for accurate measurements.",
+      "specs": {
+        "power": "N/A",
+        "rpm": "5 meters",
+        "weight": "Auto-lock",
+        "condition": "Very Good"
+      }
+    },
+    {
+      "id": "hand-saw",
+      "name": "Small Hand Saw",
+      "beforeImage": "Hand_saw-removebg-preview.png",
+      "price": 30,
+      "quantity": 3,
+      "rented": 0,
+      "available": 3,
+      "description": "Small saw for wood cutting and DIY tasks.",
+      "specs": {
+        "power": "N/A",
+        "rpm": "12-inch blade",
+        "weight": "Rubber handle",
+        "condition": "Fair"
+      }
+    },
+    {
+      "id": "orbital-sander",
+      "name": "Mini Orbital Sander",
+      "beforeImage": "Mini_orbital_sander-removebg-preview.png",
+      "price": 80,
+      "quantity": 3,
+      "rented": 0,
+      "available": 3,
+      "description": "Sander for polishing and smoothing surfaces.",
+      "specs": {
+        "power": "300W",
+        "rpm": "14000 RPM",
+        "weight": "1.0kg",
+        "condition": "Good"
+      }
+    },
+    {
+      "id": "heat-gun",
+      "name": "Heat Gun",
+      "beforeImage": "heat gun (2).png",
+      "price": 60,
+      "quantity": 4,
+      "rented": 0,
+      "available": 4,
+      "description": "Compact hot air gun for paint removal and bending plastic.",
+      "specs": {
+        "power": "1500W",
+        "rpm": "300–600°C",
+        "weight": "1.5kg",
+        "condition": "Good"
+      }
+    },
+    {
+      "id": "air-compressor",
+      "name": "Mini Air Compressor",
+      "beforeImage": "Mini_air_compressor-removebg-preview.png",
+      "price": 70,
+      "quantity": 2,
+      "rented": 0,
+      "available": 2,
+      "description": "Small compressor for cleaning and inflating.",
+      "specs": {
+        "power": "12V",
+        "rpm": "120 PSI",
+        "weight": "3.0kg",
+        "condition": "Good"
+      }
+    }
+  ],
+  "rentals": [
+    {
+      "rentalId": "e2a94b02-51e8-4a59-8c10-026641446c43",
+      "toolId": "electric-drill",
+      "userId": 1,
+      "userName": "jenny",
+      "userEmail": "abc@gmail.com",
+      "rentDays": 6,
+      "totalPrice": 540,
+      "rentalDate": "2025-11-20T02:40:59.510Z",
+      "status": "RETURNED_CLEAN"
+    },
+    {
+      "rentalId": "ef7af93d-b798-4dd8-9695-d0723889d6c0",
+      "toolId": "electric-drill",
+      "userId": 1,
+      "userName": "jenny",
+      "userEmail": "abc@gmail.com",
+      "rentDays": 7,
+      "totalPrice": 630,
+      "rentalDate": "2025-11-20T03:00:17.741Z",
+      "status": "RETURNED_CLEAN"
+    },
+    {
+      "rentalId": "0d0a4fc4-0970-4e07-94c9-b6129052e25f",
+      "toolId": "electric-drill",
+      "userId": 2,
+      "userName": "jenny",
+      "userEmail": "janellefernandes578@gmail.com",
+      "rentDays": 3,
+      "totalPrice": 270,
+      "rentalDate": "2025-11-20T03:04:52.233Z",
+      "status": "RENTED"
+    },
+    {
+      "rentalId": "4bb859e9-ae82-4e9f-ae85-398f6970e6b8",
+      "toolId": "electric-drill",
+      "userId": 3,
+      "userName": "jam",
+      "userEmail": "janelle.fernandes2005@gmail.com",
+      "rentDays": 2,
+      "totalPrice": 180,
+      "rentalDate": "2025-11-20T03:11:53.104Z",
+      "status": "RETURNED_CLEAN"
+    },
+    {
+      "rentalId": "1e9ea6e9-a3ca-42a9-b75c-0c8a0d18c1d1",
+      "toolId": "electric-drill",
+      "userId": 1,
+      "userName": "jam",
+      "userEmail": "abc@gmail.com",
+      "rentDays": 3,
+      "totalPrice": 270,
+      "rentalDate": "2025-11-20T03:23:06.345Z",
+      "status": "RENTED"
+    },
+    {
+      "rentalId": "8c9d86ed-1659-404e-98b9-b6078b496541",
+      "toolId": "electric-drill",
+      "userId": 3,
+      "userName": "jam",
+      "userEmail": "123janelle4001@sjcem.edu.in",
+      "rentDays": 3,
+      "totalPrice": 270,
+      "rentalDate": "2025-11-20T03:43:54.816Z",
+      "status": "RETURNED_CLEAN"
+    },
+    {
+      "rentalId": "09270666-8003-4090-bf9c-d663d31d8f87",
+      "toolId": "electric-drill",
+      "userId": 1,
+      "userName": "jenny",
+      "userEmail": "abc@gmail.com",
+      "rentDays": 12,
+      "totalPrice": 1080,
+      "rentalDate": "2025-11-20T04:49:10.549Z",
+      "status": "RENTED"
+    },
+    {
+      "rentalId": "66705552-0f24-4c0d-91fa-119774cca545",
+      "toolId": "claw-hammer",
+      "userId": 1,
+      "userName": "jenny",
+      "userEmail": "abc@gmail.com",
+      "rentDays": 6,
+      "totalPrice": 90,
+      "rentalDate": "2025-11-20T05:16:45.930Z",
+      "status": "RETURNED",
+      "returnDate": "2025-11-20T05:19:11.324Z",
+      "afterImage": "admin_temp_return_1763615951273.jpg"
+    },
+    {
+      "rentalId": "89571a53-57b9-463c-b96c-3413262b6734",
+      "toolId": "electric-drill",
+      "userId": 1,
+      "userName": "jenny",
+      "userEmail": "abc@gmail.com",
+      "rentDays": 5,
+      "totalPrice": 450,
+      "rentalDate": "2025-11-20T05:53:37.832Z",
+      "status": "RENTED"
+    },
+    {
+      "rentalId": "3991459f-280a-4785-b55d-88f9ab4f97e5",
+      "toolId": "electric-drill",
+      "userId": 1,
+      "userName": "jenny",
+      "userEmail": "abc@gmail.com",
+      "rentDays": 1,
+      "totalPrice": 90,
+      "rentalDate": "2025-11-20T06:07:40.036Z",
+      "status": "RENTED"
+    },
+    {
+      "rentalId": "c9ab548a-bdb6-4495-831d-8cd58ed8ac3e",
+      "toolId": "electric-drill",
+      "userId": 6,
+      "userName": "jenny",
+      "userEmail": "xyz@gmail.com",
+      "rentDays": 1,
+      "totalPrice": 90,
+      "rentalDate": "2025-11-20T06:10:49.028Z",
+      "status": "RETURNED",
+      "returnDate": "2025-11-20T06:12:43.453Z",
+      "afterImage": "admin_temp_return_1763619163391.jpg"
+    },
+    {
+      "rentalId": "70415c8f-c0c5-4213-9214-d60a9f1be382",
+      "toolId": "electric-drill",
+      "userId": 6,
+      "userName": "jenny",
+      "userEmail": "xyz@gmail.com",
+      "rentDays": 1,
+      "totalPrice": 90,
+      "rentalDate": "2025-11-20T06:13:51.897Z",
+      "status": "RETURNED",
+      "returnDate": "2025-11-20T06:14:28.102Z",
+      "afterImage": "admin_temp_return_1763619268004.jpg"
+    }
+  ],
+  "logs": [
+    {
+      "id": 1,
+      "toolId": "electric-drill",
+      "userId": 1,
+      "userName": "jenny",
+      "rentalId": "96503555-cf5c-4e2c-aeb1-75c17328a6f9",
+      "beforeImage": "2e5bbfb2-f0de-4078-9754-d2696fbd2e7b-removebg-preview.png",
+      "afterImage": "admin_temp_return_1763574210383.png",
+      "damageScore": 91,
+      "aiFakeProbability": 4,
+      "status": "Major Damage",
+      "timestamp": "2025-11-19T17:43:30.501Z",
+      "action": "RESOLVED"
+    },
+    {
+      "id": 2,
+      "toolId": "electric-drill",
+      "userId": 1,
+      "userName": "jenny",
+      "rentalId": "e2a94b02-51e8-4a59-8c10-026641446c43",
+      "beforeImage": "2e5bbfb2-f0de-4078-9754-d2696fbd2e7b-removebg-preview.png",
+      "afterImage": "admin_temp_return_1763606482771.png",
+      "damageScore": 8,
+      "aiDetected": true,
+      "aiConfidence": 82,
+      "damageDetected": false,
+      "damageConfidence": 9,
+      "imageSimilarity": 49,
+      "status": "AI Image Detected - Manual Review Recommended",
+      "timestamp": "2025-11-20T02:41:22.806Z",
+      "action": "AUTO-RESOLVED",
+      "message": "⚠️ AI-generated image detected (82.0% confidence). Upload allowed but please verify tool condition.",
+      "needsReview": true,
+      "adminNote": "AI image detected - please verify tool condition"
+    },
+    {
+      "id": 3,
+      "toolId": "electric-drill",
+      "userId": 1,
+      "userName": "jenny",
+      "rentalId": "ef7af93d-b798-4dd8-9695-d0723889d6c0",
+      "beforeImage": "2e5bbfb2-f0de-4078-9754-d2696fbd2e7b-removebg-preview.png",
+      "afterImage": "admin_temp_return_1763607637878.png",
+      "damageScore": 91,
+      "aiDetected": true,
+      "aiConfidence": 70,
+      "damageDetected": true,
+      "damageConfidence": 91,
+      "imageSimilarity": 56,
+      "status": "Suspicious Image Detected",
+      "timestamp": "2025-11-20T03:00:37.955Z",
+      "action": "AUTO-RESOLVED",
+      "message": "⚠️ Image shows signs of AI generation (70.0% confidence). Upload allowed.",
+      "needsReview": true,
+      "adminNote": "AI image detected - please verify tool condition"
+    },
+    {
+      "id": 4,
+      "toolId": "electric-drill",
+      "userId": 3,
+      "userName": "jam",
+      "rentalId": "4bb859e9-ae82-4e9f-ae85-398f6970e6b8",
+      "beforeImage": "2e5bbfb2-f0de-4078-9754-d2696fbd2e7b-removebg-preview.png",
+      "afterImage": "admin_temp_return_1763608416420.jpg",
+      "damageScore": 25,
+      "aiDetected": false,
+      "aiConfidence": 43,
+      "damageDetected": false,
+      "damageConfidence": 9,
+      "imageSimilarity": 51,
+      "status": "Needs Repair",
+      "timestamp": "2025-11-20T03:13:36.483Z",
+      "action": "AUTO-RESOLVED",
+      "message": "Tool requires minor repairs",
+      "needsReview": false,
+      "adminNote": "Normal return"
+    },
+    {
+      "id": 5,
+      "toolId": "electric-drill",
+      "userId": 3,
+      "userName": "jam",
+      "rentalId": "8c9d86ed-1659-404e-98b9-b6078b496541",
+      "beforeImage": "2e5bbfb2-f0de-4078-9754-d2696fbd2e7b-removebg-preview.png",
+      "afterImage": "admin_temp_return_1763610305536.jpg",
+      "damageScore": 19,
+      "aiDetected": true,
+      "aiConfidence": 73,
+      "damageDetected": false,
+      "damageConfidence": 18,
+      "imageSimilarity": 59,
+      "status": "AI Image Detected - Manual Review Required",
+      "timestamp": "2025-11-20T03:45:05.554Z",
+      "action": "PENDING_REVIEW",
+      "message": "The image requires manual review. Our team will verify the tool condition.",
+      "needsReview": true,
+      "adminNote": "AI image detected - please verify tool condition"
+    },
+    {
+      "id": 6,
+      "toolId": "claw-hammer",
+      "userId": 1,
+      "userName": "jenny",
+      "rentalId": "66705552-0f24-4c0d-91fa-119774cca545",
+      "beforeImage": "Claw_hammer-removebg-preview.png",
+      "afterImage": "admin_temp_return_1763615951273.jpg",
+      "damageScore": 9,
+      "aiDetected": false,
+      "aiConfidence": 47,
+      "damageDetected": false,
+      "damageConfidence": 14,
+      "imageSimilarity": 64,
+      "status": "Available",
+      "timestamp": "2025-11-20T05:19:11.324Z",
+      "action": "AUTO-RESOLVED",
+      "message": "✅ Tool returned successfully and is available for rent.",
+      "needsReview": false,
+      "adminNote": "Image similarity low - verify correct tool"
+    },
+    {
+      "id": 7,
+      "toolId": "electric-drill",
+      "userId": 6,
+      "userName": "jenny",
+      "rentalId": "c9ab548a-bdb6-4495-831d-8cd58ed8ac3e",
+      "beforeImage": "2e5bbfb2-f0de-4078-9754-d2696fbd2e7b-removebg-preview.png",
+      "afterImage": "admin_temp_return_1763619163391.jpg",
+      "damageScore": 22,
+      "aiDetected": false,
+      "aiConfidence": 37,
+      "damageDetected": false,
+      "damageConfidence": 16,
+      "imageSimilarity": 64,
+      "status": "Needs Repair",
+      "timestamp": "2025-11-20T06:12:43.453Z",
+      "action": "AUTO-RESOLVED",
+      "message": "Tool returned successfully. Minor maintenance recommended.",
+      "needsReview": false,
+      "adminNote": "Image similarity low - verify correct tool"
+    },
+    {
+      "id": 8,
+      "toolId": "electric-drill",
+      "userId": 6,
+      "userName": "jenny",
+      "rentalId": "70415c8f-c0c5-4213-9214-d60a9f1be382",
+      "beforeImage": "2e5bbfb2-f0de-4078-9754-d2696fbd2e7b-removebg-preview.png",
+      "afterImage": "admin_temp_return_1763619268004.jpg",
+      "damageScore": 14,
+      "aiDetected": false,
+      "aiConfidence": 23,
+      "damageDetected": false,
+      "damageConfidence": 2,
+      "imageSimilarity": 63,
+      "status": "Available",
+      "timestamp": "2025-11-20T06:14:28.102Z",
+      "action": "AUTO-RESOLVED",
+      "message": "✅ Tool returned successfully and is available for rent.",
+      "needsReview": false,
+      "adminNote": "Image similarity low - verify correct tool"
+    }
+  ]
+}

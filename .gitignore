@@ -1,0 +1,8 @@
+node_modules/
+uploads/
+*.log
+*.tmp
+*.backup
+.env
+.DS_Store
+Thumbs.db

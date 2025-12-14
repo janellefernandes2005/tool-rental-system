@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Rented Tools - Rental Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
+    <style>
+        :root {
+            --primary: #00dbde;
+            --primary-dark: #00a8cc;
+            --secondary: #0077ff;
+            --accent: #00ff99;
+            --danger: #ff6b6b;
+            --warning: #ffa726;
+            --dark: #0a0e14;
+            --dark-light: #1a1f2e;
+            --text: #e0e0e0;
+            --text-muted: #888;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #0f1a2e 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        .page-header {
+            background: rgba(10, 14, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 119, 255, 0.2);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Exo 2', sans-serif;
+            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--accent);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-button {
+            padding: 8px 16px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 119, 255, 0.4);
+        }
+        
+        .logout-btn {
+            background: linear-gradient(90deg, var(--danger), #ff8e8e);
+            border: none;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px 30px;
+        }
+        
+        .page-title {
+            font-family: 'Exo 2', sans-serif;
+            color: var(--primary);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+        
+        /* Stats Overview */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: var(--dark-light);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 219, 222, 0.2);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Rental Cards Grid */
+        .rentals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .rental-card {
+            background: var(--dark-light);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 119, 255, 0.1);
+        }
+        
+        .rental-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 219, 222, 0.2);
+            border-color: var(--primary);
+        }
+        
+        .rental-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .rental-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .rental-card:hover .rental-image {
+            transform: scale(1.05);
+        }
+        
+        .rental-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-active {
+            background: rgba(0, 255, 153, 0.2);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+        
+        .badge-pending {
+            background: rgba(255, 167, 38, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+        
+        .badge-completed {
+            background: rgba(0, 119, 255, 0.2);
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+        }
+        
+        .rental-content {
+            padding: 20px;
+        }
+        
+        .rental-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rental-title i {
+            color: var(--primary);
+        }
+        
+        .rental-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .detail-value.highlight {
+            color: var(--accent);
+        }
+        
+        .rental-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .return-btn {
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            color: var(--dark);
+        }
+        
+        .return-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 153, 0.4);
+        }
+        
+        .extend-btn {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .extend-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Status Columns */
+        .status-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .status-column {
+            background: var(--dark-light);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 119, 255, 0.1);
+        }
+        
+        .column-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 119, 255, 0.2);
+        }
+        
+        .column-header i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .column-header h3 {
+            font-size: 1.3rem;
+            color: var(--text);
+        }
+        
+        .column-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(10, 14, 20, 0.5);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .status-item:hover {
+            background: rgba(0, 119, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .status-icon.active {
+            background: rgba(0, 255, 153, 0.2);
+            color: var(--accent);
+        }
+        
+        .status-icon.pending {
+            background: rgba(255, 167, 38, 0.2);
+            color: var(--warning);
+        }
+        
+        .status-icon.completed {
+            background: rgba(0, 119, 255, 0.2);
+            color: var(--secondary);
+        }
+        
+        .status-info {
+            flex: 1;
+        }
+        
+        .status-info h4 {
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+        
+        .status-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--dark-light);
+            border-radius: 15px;
+            border: 2px dashed rgba(0, 119, 255, 0.3);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .browse-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .browse-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 119, 255, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .rentals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .rental-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .rental-actions {
+                flex-direction: column;
+            }
+            
+            .status-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="page-header">
+        <div class="logo">
+            <i class="fas fa-tools"></i>
+            <span>Rental Hub</span>
+        </div>
+        <div class="nav-buttons">
+            <a href="tools.html" class="nav-button">
+                <i class="fas fa-hammer"></i>
+                Browse Tools
+            </a>
+            <button class="nav-button logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="page-title">My Rented Tools</h1>
+        <p class="page-subtitle">Manage your current and past tool rentals</p>
+        
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <div class="stat-number" id="active-rentals-count">0</div>
+                <div class="stat-label">Active Rentals</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <div class="stat-number" id="total-spent">₹0</div>
+                <div class="stat-label">Total Spent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-number" id="rental-days">0</div>
+                <div class="stat-label">Rental Days</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-number" id="tools-rented">0</div>
+                <div class="stat-label">Tools Rented</div>
+            </div>
+        </div>
+        
+        <!-- Active Rentals -->
+        <div class="rentals-grid" id="active-rentals-grid">
+            <!-- Active rentals will be populated by JavaScript -->
+        </div>
+        
+        <!-- Status Columns -->
+        <div class="status-columns">
+            <div class="status-column">
+                <div class="column-header">
+                    <i class="fas fa-clock"></i>
+                    <h3>No Pending Returns</h3>
+                </div>
+                <div class="column-content" id="no-pending-returns">
+                    <!-- No pending returns will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="status-column">
+                <div class="column-header">
+                    <i class="fas fa-history"></i>
+                    <h3>Rental History</h3>
+                </div>
+                <div class="column-content" id="rental-history">
+                    <!-- Rental history will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || user.role !== 'user') {
+            alert('Please login as user first');
+            window.location.href = '/';
+        }
+
+        // DOM Elements
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        // Stats elements
+        const activeRentalsCount = document.getElementById('active-rentals-count');
+        const totalSpent = document.getElementById('total-spent');
+        const rentalDays = document.getElementById('rental-days');
+        const toolsRented = document.getElementById('tools-rented');
+        
+        // Grid containers
+        const activeRentalsGrid = document.getElementById('active-rentals-grid');
+        const noPendingReturns = document.getElementById('no-pending-returns');
+        const rentalHistory = document.getElementById('rental-history');
+
+        // Event Listeners
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        });
+
+        // Functions
+        async function loadUserRentals() {
+            try {
+                const response = await fetch(`/api/rentals/user/${user.userId}`);
+                const rentals = await response.json();
+                
+                // Separate rentals by status
+                const activeRentals = rentals.filter(r => r.status === 'RENTED');
+                const pendingReturns = rentals.filter(r => r.status === 'RETURNED_PENDING');
+                const completedRentals = rentals.filter(r => r.status === 'RETURNED_CLEAN');
+                
+                // Update stats
+                updateStats(activeRentals, completedRentals);
+                
+                // Display rentals
+                displayActiveRentals(activeRentals);
+                displayNoPendingReturns(pendingReturns);
+                displayRentalHistory(completedRentals);
+                
+            } catch (error) {
+                console.error('Error loading rentals:', error);
+                showErrorState();
+            }
+        }
+
+        function updateStats(activeRentals, completedRentals) {
+            // Active rentals count
+            activeRentalsCount.textContent = activeRentals.length;
+            
+            // Calculate total spent
+            const totalSpentAmount = [...activeRentals, ...completedRentals]
+                .reduce((sum, rental) => sum + rental.totalPrice, 0);
+            totalSpent.textContent = `₹${totalSpentAmount.toLocaleString('en-IN')}`;
+            
+            // Calculate total rental days
+            const totalDays = [...activeRentals, ...completedRentals]
+                .reduce((sum, rental) => sum + rental.rentDays, 0);
+            rentalDays.textContent = totalDays;
+            
+            // Total tools rented
+            toolsRented.textContent = activeRentals.length + completedRentals.length;
+        }
+
+        function displayActiveRentals(rentals) {
+            if (rentals.length === 0) {
+                activeRentalsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-tools"></i>
+                        <h3>No Active Rentals</h3>
+                        <p>You don't have any tools currently rented. Browse our collection to find the perfect tool for your needs.</p>
+                        <a href="tools.html" class="browse-btn">
+                            <i class="fas fa-hammer"></i>
+                            Browse Tools
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            activeRentalsGrid.innerHTML = '';
+            
+            rentals.forEach(rental => {
+                const rentalCard = createRentalCard(rental, 'active');
+                activeRentalsGrid.appendChild(rentalCard);
+                
+                // Animate card entrance
+                gsap.fromTo(rentalCard, 
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: 0.5, delay: rentals.indexOf(rental) * 0.1 }
+                );
+            });
+        }
+
+        function displayNoPendingReturns(rentals) {
+            if (rentals.length === 0) {
+                noPendingReturns.innerHTML = `
+                    <div class="status-item">
+                        <div class="status-icon completed">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="status-info">
+                            <h4>All Returns Processed</h4>
+                            <p>No pending returns at this time</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            noPendingReturns.innerHTML = '';
+            
+            rentals.forEach(rental => {
+                const statusItem = document.createElement('div');
+                statusItem.className = 'status-item';
+                
+                statusItem.innerHTML = `
+                    <div class="status-icon pending">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <div class="status-info">
+                        <h4>${rental.toolName}</h4>
+                        <p>Returned on ${new Date(rental.returnDate).toLocaleDateString()}</p>
+                    </div>
+                `;
+                
+                noPendingReturns.appendChild(statusItem);
+            });
+        }
+
+        function displayRentalHistory(rentals) {
+            if (rentals.length === 0) {
+                rentalHistory.innerHTML = `
+                    <div class="status-item">
+                        <div class="status-icon completed">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="status-info">
+                            <h4>No Rental History</h4>
+                            <p>Your rental history will appear here</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            rentalHistory.innerHTML = '';
+            
+            // Show only the 5 most recent rentals
+            const recentRentals = rentals.slice(0, 5);
+            
+            recentRentals.forEach(rental => {
+                const statusItem = document.createElement('div');
+                statusItem.className = 'status-item';
+                
+                statusItem.innerHTML = `
+                    <div class="status-icon completed">
+                        <i class="fas fa-toolbox"></i>
+                    </div>
+                    <div class="status-info">
+                        <h4>${rental.toolName}</h4>
+                        <p>Rented on ${new Date(rental.rentalDate).toLocaleDateString()}</p>
+                    </div>
+                `;
+                
+                rentalHistory.appendChild(statusItem);
+            });
+            
+            // Add a "View All" item if there are more than 5 rentals
+            if (rentals.length > 5) {
+                const viewAllItem = document.createElement('div');
+                viewAllItem.className = 'status-item';
+                viewAllItem.style.cursor = 'pointer';
+                viewAllItem.addEventListener('click', function() {
+                    alert('View all rental history feature coming soon!');
+                });
+                
+                viewAllItem.innerHTML = `
+                    <div class="status-icon completed">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                    <div class="status-info">
+                        <h4>View All History</h4>
+                        <p>See all ${rentals.length} completed rentals</p>
+                    </div>
+                `;
+                
+                rentalHistory.appendChild(viewAllItem);
+            }
+        }
+
+        function createRentalCard(rental, status) {
+            const card = document.createElement('div');
+            card.className = 'rental-card';
+            
+            // Calculate remaining days for active rentals
+            const rentalDate = new Date(rental.rentalDate);
+            const returnDate = new Date(rentalDate);
+            returnDate.setDate(returnDate.getDate() + rental.rentDays);
+            const today = new Date();
+            const daysRemaining = Math.ceil((returnDate - today) / (1000 * 60 * 60 * 24));
+            
+            let badgeClass = '';
+            let badgeText = '';
+            let actionsHTML = '';
+            
+            switch(status) {
+                case 'active':
+                    badgeClass = 'badge-active';
+                    badgeText = 'Active';
+                    actionsHTML = `
+                        <button class="action-btn return-btn" onclick="returnTool('${rental.rentalId}', '${rental.toolId}')">
+                            <i class="fas fa-undo"></i>
+                            Return Tool
+                        </button>
+                        <button class="action-btn extend-btn" onclick="extendRental('${rental.rentalId}')">
+                            <i class="fas fa-calendar-plus"></i>
+                            Extend
+                        </button>
+                    `;
+                    break;
+            }
+            
+            card.innerHTML = `
+                <div class="rental-image-container">
+                    <img src="${rental.toolImage}" alt="${rental.toolName}" class="rental-image" onerror="this.src='https://via.placeholder.com/400x200/1a1f2e/00dbde?text=TOOL+IMAGE'">
+                    <div class="rental-badge ${badgeClass}">${badgeText}</div>
+                </div>
+                <div class="rental-content">
+                    <h3 class="rental-title">
+                        <i class="fas fa-toolbox"></i>
+                        ${rental.toolName}
+                    </h3>
+                    
+                    <div class="rental-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Rental Date</span>
+                            <span class="detail-value">${new Date(rental.rentalDate).toLocaleDateString()}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Duration</span>
+                            <span class="detail-value">${rental.rentDays} day${rental.rentDays > 1 ? 's' : ''}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Total Cost</span>
+                            <span class="detail-value highlight">₹${rental.totalPrice.toLocaleString('en-IN')}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Days Remaining</span>
+                            <span class="detail-value ${daysRemaining <= 3 ? 'highlight' : ''}">
+                                ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="rental-actions">
+                        ${actionsHTML}
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function returnTool(rentalId, toolId) {
+            window.location.href = `quality-checkandlog.html?rentalId=${rentalId}&toolId=${toolId}`;
+        }
+
+        function extendRental(rentalId) {
+            // In a real application, this would open a modal or redirect to extension page
+            alert('Rental extension feature coming soon! For now, please return the tool and rent it again if needed.');
+        }
+
+        function showErrorState() {
+            const errorHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Error Loading Rentals</h3>
+                    <p>We encountered an issue while loading your rentals. Please try refreshing the page or contact support if the problem persists.</p>
+                    <button class="browse-btn" onclick="location.reload()" style="border: none;">
+                        <i class="fas fa-redo"></i>
+                        Refresh Page
+                    </button>
+                </div>
+            `;
+            
+            activeRentalsGrid.innerHTML = errorHTML;
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserRentals();
+            
+            // Add entrance animation
+            gsap.fromTo('.page-title, .page-subtitle', 
+                { opacity: 0, y: -20 },
+                { opacity: 1, y: 0, duration: 0.8 }
+            );
+            
+            gsap.fromTo('.stats-overview', 
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8, delay: 0.2 }
+            );
+        });
+    </script>
+</body>
+</html>

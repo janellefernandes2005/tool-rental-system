@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tool Rental List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
+    <style>
+        html, body {
+            margin: 0; padding: 0; font-family: 'Montserrat', sans-serif;
+            color: #e0e0e0; background: #0a0e14; min-height: 100vh;
+        }
+        .page-header {
+            background: rgba(10, 14, 20, 0.95); padding: 20px 40px;
+            border-bottom: 1px solid rgba(0, 119, 255, 0.2);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header-title { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 1.8rem; color: #00dbde; margin: 0; }
+        .logout-btn {
+            padding: 10px 20px; background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+            color: white; text-decoration: none; border-radius: 5px; font-weight: 500;
+            transition: all 0.3s ease; border: none; cursor: pointer;
+        }
+        .logout-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4); }
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        .nav-link {
+            padding: 10px 20px;
+            background: linear-gradient(90deg, #0077ff, #00dbde);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 119, 255, 0.4);
+        }
+        #tools-section {
+            background: #0a0e14; padding: 60px 0 80px; min-height: 100vh;
+        }
+        .section-title {
+            font-family: 'Exo 2', sans-serif; font-size: 2.5rem; margin-bottom: 40px;
+            text-align: center; color: #00dbde; text-transform: uppercase; letter-spacing: 3px;
+            opacity: 0; transform: translateY(20px);
+        }
+        #tool-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; width: 90%; max-width: 1400px; margin: 0 auto;
+        }
+        .card {
+            height: 280px; display: flex; justify-content: center; align-items: center;
+            background: #111; border-radius: 12px; box-shadow: 0 8px 18px rgba(0,0,0,0.45);
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+            cursor: pointer; position: relative; overflow: hidden;
+            border: 1px solid rgba(0, 119, 255, 0.12); opacity: 0; transform: translateY(30px);
+        }
+        .tool-image { width: 65%; height: auto; transition: transform 0.5s ease; object-fit: contain; }
+        .card:hover {
+            transform: translateY(-8px); border-color: rgba(0, 119, 255, 0.35);
+            box-shadow: 0 0 8px #00dbde, 0 0 40px rgba(0, 219, 222, 0.22);
+        }
+        .card:hover .tool-image { transform: scale(1.15) translateY(-10px); }
+        .card-name {
+            position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10, 14, 20, 0.9);
+            padding: 12px; text-align: center; font-size: 0.9rem; font-weight: 500;
+            transform: translateY(0); z-index: 2;
+        }
+        .price-tag { color: #00ff99; font-weight: 700; margin-left: 5px; }
+        .stock-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 119, 255, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            z-index: 2;
+        }
+        .out-of-stock-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 0, 0, 0.2); backdrop-filter: blur(2px); z-index: 3;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-weight: 700; font-size: 1.5rem; pointer-events: none;
+        }
+        @media (max-width: 768px) {
+            .page-header { flex-direction: column; gap: 15px; padding: 15px; text-align: center; }
+            #tool-grid { grid-template-columns: 1fr; }
+            .nav-links { flex-direction: column; width: 100%; }
+            .nav-link { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <h1 class="header-title">Rental Hub - Tools</h1>
+        <div class="nav-links">
+            <a href="rented-tools.html" class="nav-link">My Rentals</a>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+    </header>
+    <section id="tools-section">
+        <h1 class="section-title">Industrial Tools for Rent</h1>
+        <div id="tool-grid"></div>
+    </section>
+    <script>
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || user.role !== 'user') {
+            alert('Please login as user first');
+            window.location.href = '/';
+        }
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        });
+        async function loadTools() {
+            try {
+                const response = await fetch('/api/tools');
+                const tools = await response.json();
+                displayTools(tools);
+            } catch (error) {
+                console.error('Error loading tools:', error);
+                const fallbackTools = [
+                    { id: "electric-drill", name: "Electric Drill Machine", beforeImage: "2e5bbfb2-f0de-4078-9754-d2696fbd2e7b-removebg-preview.png", price: 90, available: 4, quantity: 4 },
+                    { id: "claw-hammer", name: "Claw Hammer", beforeImage: "Claw_hammer-removebg-preview.png", price: 15, available: 5, quantity: 5 },
+                    { id: "screwdriver-set", name: "Screwdriver Set (12-in-1)", beforeImage: "S4090-0012-removebg-preview.png", price: 30, available: 8, quantity: 8 },
+                    { id: "adjustable-wrench", name: "Adjustable Wrench (Small)", beforeImage: "Adjustable_wrench-removebg-preview.png", price: 20, available: 6, quantity: 6 },
+                    { id: "pliers-set", name: "Pliers Set", beforeImage: "Pliers_set1-removebg-preview.png", price: 25, available: 7, quantity: 7 },
+                    { id: "measuring-tape", name: "Measuring Tape (5m)", beforeImage: "Measuring_tape-removebg-preview.png", price: 10, available: 10, quantity: 10 },
+                    { id: "hand-saw", name: "Small Hand Saw", beforeImage: "Hand_saw-removebg-preview.png", price: 30, available: 3, quantity: 3 },
+                    { id: "heat-gun", name: "Heat Gun", beforeImage: "heat gun (2).png", price: 100, available: 2, quantity: 2 }
+                ];
+                displayTools(fallbackTools);
+            }
+        }
+        function displayTools(tools) {
+            const toolGrid = document.getElementById('tool-grid');
+            toolGrid.innerHTML = '';
+            tools.forEach((tool, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.toolId = tool.id;
+                const img = document.createElement('img');
+                img.className = 'tool-image';
+                // FIXED: Use correct path - remove /backend from the path
+                img.src = tool.beforeImage ? `/uploads/before/${tool.beforeImage}` : 'https://via.placeholder.com/200x200/333/fff?text=' + tool.name;
+                img.alt = tool.name;
+                img.onerror = () => { 
+                    img.src = 'https://via.placeholder.com/200x200/333/fff?text=' + tool.name.toUpperCase().substring(0, 10); 
+                };
+                const nameOverlay = document.createElement('div');
+                nameOverlay.className = 'card-name';
+                nameOverlay.innerHTML = `${tool.name} <span class="price-tag">(₹${tool.price}/day)</span>`;
+                const stockInfo = document.createElement('div');
+                stockInfo.className = 'stock-info';
+                stockInfo.textContent = `Stock: ${tool.available}/${tool.quantity}`;
+                card.appendChild(img);
+                card.appendChild(stockInfo);
+                if (tool.available <= 0) {
+                    const overlay = document.createElement('div');
+                    overlay.className = 'out-of-stock-overlay';
+                    overlay.textContent = 'UNAVAILABLE';
+                    card.appendChild(overlay);
+                }
+                card.appendChild(nameOverlay);
+                toolGrid.appendChild(card);
+                gsap.fromTo(card,
+                    { opacity: 0, y: 50, rotationY: 10 },
+                    { opacity: 1, y: 0, rotationY: 0, duration: 0.6, delay: index * 0.1, ease: "back.out(1.7)" }
+                );
+                card.addEventListener('click', () => {
+                    if (tool.available <= 0) {
+                        alert('This tool is currently out of stock');
+                        return;
+                    }
+                    gsap.to(card, {
+                        scale: 0.95, duration: 0.2, yoyo: true, repeat: 1,
+                        onComplete: () => {
+                            window.location.href = `tool-detail.html?id=${tool.id}`;
+                        }
+                    });
+                });
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user || user.role !== 'user') {
+                window.location.href = '/';
+                return;
+            }
+            gsap.to('.section-title', { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+            loadTools();
+        });
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                window.location.reload();
+            }
+        });
+    </script>
+</body>
+</html>

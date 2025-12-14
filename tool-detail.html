@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: #0a0e14; color: #e0e0e0; margin: 0; padding-top: 0; min-height: 100vh; }
+        h1 { font-family: 'Exo 2', sans-serif; color: #00dbde; font-size: 2rem; }
+        .page-header {
+            background: rgba(10, 14, 20, 0.95); padding: 20px 40px;
+            border-bottom: 1px solid rgba(0, 119, 255, 0.2);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header-title { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 1.8rem; color: #00dbde; margin: 0; }
+        .nav-buttons { display: flex; gap: 15px; }
+        .nav-button {
+            padding: 10px 20px; background: linear-gradient(90deg, #0077ff, #00dbde);
+            color: white; text-decoration: none; border-radius: 5px; font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .nav-button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 119, 255, 0.4); }
+        .logout-btn {
+            background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+            border: none; cursor: pointer;
+        }
+        .main-content { display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+        .container { display: flex; gap: 40px; max-width: 1100px; width: 100%; background: #111; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .image-container { flex: 1; perspective: 1000px; }
+        .image-container img { width: 100%; max-height: 400px; object-fit: contain; border-radius: 10px; box-shadow: 0 15px 35px rgba(0, 119, 255, 0.2); transition: transform 0.5s ease; }
+        .info-container { flex: 1; }
+        .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .spec-item { background: rgba(10, 14, 20, 0.5); padding: 15px; border-radius: 8px; border-left: 3px solid #0077ff; opacity: 0; transform: translateX(-20px); }
+        .spec-item h3 { margin: 0 0 8px 0; font-size: 1rem; color: #00dbde; }
+        .spec-item p { margin: 0; font-size: 0.9rem; }
+        .rental-panel { background: rgba(0, 119, 255, 0.1); border: 1px solid #0077ff; border-radius: 10px; padding: 20px; margin-bottom: 25px; }
+        .rental-price { font-family: 'Exo 2', sans-serif; font-size: 2.2rem; color: #00ff99; display: flex; align-items: baseline; gap: 10px; }
+        .rental-price small { font-size: 1rem; color: #00dbde; }
+        .availability-badge { font-size: 1rem; font-weight: 700; padding: 5px 10px; border-radius: 5px; margin-bottom: 15px; display: inline-block; }
+        .in-stock { background-color: #00ff991a; color: #00ff99; border: 1px solid #00ff99; }
+        .out-of-stock { background-color: #ff6b6b1a; color: #ff6b6b; border: 1px solid #ff6b6b; }
+        #rent-button {
+            display: block; width: 100%; padding: 15px 25px; background: linear-gradient(90deg, #00ff99, #00dbde);
+            color: #0a0e14; border: none; border-radius: 5px; font-weight: 700; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        #rent-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 255, 153, 0.4); }
+        #rent-button:disabled { background: #333; color: #888; cursor: not-allowed; box-shadow: none; transform: translateY(0); }
+        .info-panel { background: rgba(10, 14, 20, 0.95); border-radius: 15px; border: 1px solid rgba(0, 119, 255, 0.2); padding: 20px; margin-top: 25px; opacity: 0; transform: translateX(20px); }
+        .info-panel h3 { color: #00dbde; margin-top: 0; border-bottom: 1px solid rgba(0, 119, 255, 0.3); padding-bottom: 10px; }
+        .back-button { 
+            display: inline-block; margin-top: 20px; padding: 12px 25px; 
+            background: linear-gradient(90deg, #0077ff, #00dbde); color: white; 
+            text-decoration: none; border-radius: 5px; font-weight: 500; 
+            transition: all 0.3s ease;
+        }
+        .back-button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 119, 255, 0.4); }
+        @media (max-width: 768px) {
+            .container { flex-direction: column; padding: 25px; }
+            .specs-grid { grid-template-columns: 1fr; }
+            .page-header { flex-direction: column; gap: 15px; padding: 15px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <h1 class="header-title">Rental Hub</h1>
+        <div class="nav-buttons">
+            <a href="tools.html" class="nav-button">Back to Tools</a>
+            <button class="nav-button logout-btn" id="logoutBtn">Logout</button>
+        </div>
+    </header>
+    <div class="main-content">
+        <div class="container">
+            <div class="image-container" id="tilt-container">
+                <img id="tool-image" src="" alt="Tool Image">
+            </div>
+            <div class="info-container">
+                <h1 id="tool-title">Tool Name</h1>
+                <div class="rental-panel">
+                    <div class="rental-price">
+                        <span id="tool-price">₹0</span>
+                        <small>per day</small>
+                    </div>
+                    <div id="tool-availability" class="availability-badge"></div>
+                    <button id="rent-button">Rent This Tool</button>
+                </div>
+                <div class="specs-grid" id="specs-grid">
+                    <div class="spec-item">
+                        <h3>Power / Capacity</h3>
+                        <p id="spec-power">Loading...</p>
+                    </div>
+                    <div class="spec-item">
+                        <h3>RPM / Features</h3>
+                        <p id="spec-rpm">Loading...</p>
+                    </div>
+                    <div class="spec-item">
+                        <h3>Weight / Handle</h3>
+                        <p id="spec-weight">Loading...</p>
+                    </div>
+                    <div class="spec-item">
+                        <h3>Condition</h3>
+                        <p id="spec-condition">Loading...</p>
+                    </div>
+                </div>
+                <div class="info-panel">
+                    <h3>Tool Description</h3>
+                    <p id="tool-description">
+                        Loading tool details...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || user.role !== 'user') {
+            alert('Please login as user first');
+            window.location.href = '/';
+        }
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        });
+        async function loadToolDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toolId = urlParams.get('id');
+            try {
+                const response = await fetch('/api/tools');
+                const tools = await response.json();
+                const tool = tools.find(t => t.id === toolId);
+                
+                if (!tool) {
+                    document.getElementById('tool-title').textContent = 'Tool Not Found';
+                    return;
+                }
+                document.getElementById('tool-image').src = tool.beforeImage ? `/backend/uploads/before/${tool.beforeImage}` : 'https://via.placeholder.com/400x400/333/fff?text=' + tool.name;
+                document.getElementById('tool-image').alt = tool.name;
+                document.getElementById('tool-image').onerror = () => { this.src = 'https://via.placeholder.com/400x400/333/fff?text=' + tool.id.toUpperCase(); };
+                document.getElementById('tool-title').textContent = tool.name;
+                document.title = `${tool.name} - Details`;
+                document.getElementById('tool-description').textContent = tool.description;
+                document.getElementById('spec-power').textContent = tool.specs.power || 'N/A';
+                document.getElementById('spec-rpm').textContent = tool.specs.rpm || 'N/A';
+                document.getElementById('spec-weight').textContent = tool.specs.weight || 'N/A';
+                document.getElementById('spec-condition').textContent = tool.specs.condition || 'N/A';
+                document.getElementById('tool-price').textContent = `₹${tool.price.toLocaleString('en-IN')}`;
+                const availabilityEl = document.getElementById('tool-availability');
+                const rentButton = document.getElementById('rent-button');
+                if (tool.available > 0) {
+                    availabilityEl.textContent = '✅ In Stock';
+                    availabilityEl.className = 'availability-badge in-stock';
+                    rentButton.disabled = false;
+                } else {
+                    availabilityEl.textContent = '❌ Out of Stock';
+                    availabilityEl.className = 'availability-badge out-of-stock';
+                    rentButton.disabled = true;
+                }
+                rentButton.addEventListener('click', () => {
+                    window.location.href = `rent-form.html?id=${tool.id}`;
+                });
+                gsap.to(".spec-item", {
+                    opacity: 1, x: 0, stagger: 0.15, duration: 0.7, ease: "power2.out", delay: 0.3
+                });
+                gsap.to(".info-panel", {
+                    opacity: 1, x: 0, stagger: 0.2, duration: 0.7, ease: "power2.out", delay: 0.8
+                });
+                const tiltContainer = document.getElementById('tilt-container');
+                const toolImage = document.getElementById('tool-image');
+                tiltContainer.addEventListener('mousemove', (e) => {
+                    const x = e.clientX - tiltContainer.getBoundingClientRect().left;
+                    const y = e.clientY - tiltContainer.getBoundingClientRect().top;
+                    const xPercentage = (x / tiltContainer.offsetWidth - 0.5) * 2;
+                    const yPercentage = (y / tiltContainer.offsetHeight - 0.5) * 2;
+                    toolImage.style.transform = `rotateY(${xPercentage * 5}deg) rotateX(${yPercentage * -5}deg) scale(1.02)`;
+                });
+                tiltContainer.addEventListener('mouseleave', () => {
+                    toolImage.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+                });
+            } catch (error) {
+                console.error('Error loading tool details:', error);
+                document.getElementById('tool-title').textContent = 'Error Loading Tool';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', loadToolDetails);
+    </script>
+</body>
+</html>

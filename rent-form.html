@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Rental Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: #0a0e14; color: #e0e0e0; margin: 0; padding-top: 0; min-height: 100vh; }
+        h1 { font-family: 'Exo 2', sans-serif; color: #00dbde; font-size: 2rem; }
+        .page-header {
+            background: rgba(10, 14, 20, 0.95); padding: 20px 40px;
+            border-bottom: 1px solid rgba(0, 119, 255, 0.2);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header-title { font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 1.8rem; color: #00dbde; margin: 0; }
+        .nav-buttons { display: flex; gap: 15px; }
+        .nav-button {
+            padding: 10px 20px; background: linear-gradient(90deg, #0077ff, #00dbde);
+            color: white; text-decoration: none; border-radius: 5px; font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .nav-button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 119, 255, 0.4); }
+        .logout-btn {
+            background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+            border: none; cursor: pointer;
+        }
+        .main-content { display: flex; justify-content: center; padding: 40px 20px; }
+        .container { max-width: 900px; width: 100%; background: #111; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .tool-activity {
+            display: flex; gap: 30px; margin-bottom: 30px; padding: 20px;
+            background: rgba(0, 119, 255, 0.1); border: 1px solid #0077ff; border-radius: 10px;
+            align-items: flex-start;
+        }
+        .tool-activity img {
+            width: 150px; height: 150px; object-fit: contain; border-radius: 8px;
+            flex-shrink: 0; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .tool-info { flex-grow: 1; }
+        .tool-info h2 { font-family: 'Exo 2', sans-serif; color: #00dbde; margin: 0 0 10px 0; font-size: 1.5rem; }
+        .tool-info p { margin: 0; font-size: 0.9rem; color: #ccc; }
+        .rental-form {
+            background: rgba(10, 14, 20, 0.9); border-radius: 10px; padding: 25px;
+            border: 1px solid rgba(0, 119, 255, 0.2);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #00dbde; font-weight: 500; }
+        .form-group input {
+            width: 100%; padding: 12px 15px; background: rgba(15, 20, 30, 0.8);
+            border: 1px solid rgba(0, 119, 255, 0.3); border-radius: 5px; color: #e0e0e0;
+            box-sizing: border-box; font-size: 1em;
+        }
+        .calculation-summary {
+            margin-top: 25px; padding: 15px; border-top: 2px solid #00dbde;
+            background: rgba(0, 219, 222, 0.05); border-radius: 0 0 10px 10px;
+        }
+        .price-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1rem; }
+        .total-price { font-family: 'Exo 2', sans-serif; color: #00ff99; font-size: 1.8rem; margin-top: 15px; }
+        #submit-rent {
+            width: 100%; padding: 15px; background: linear-gradient(90deg, #00ff99, #00dbde);
+            color: #0a0e14; border: none; border-radius: 5px; font-weight: 700;
+            font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease;
+        }
+        #submit-rent:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 255, 153, 0.4); }
+        @media (max-width: 768px) {
+            .tool-activity { flex-direction: column; align-items: center; text-align: center; }
+            .page-header { flex-direction: column; gap: 15px; padding: 15px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <h1 class="header-title">Rental Hub - Checkout</h1>
+        <div class="nav-buttons">
+            <a href="tools.html" class="nav-button">Back to Tools</a>
+            <button class="nav-button logout-btn" id="logoutBtn">Logout</button>
+        </div>
+    </header>
+    <div class="main-content">
+        <div class="container">
+            <h1>Tool Rental Checkout</h1>
+            <div class="tool-activity">
+                <img id="rent-tool-image" src="" alt="Tool Image">
+                <div class="tool-info">
+                    <h2>Renting: <span id="rent-tool-name">Loading...</span></h2>
+                    <p id="rent-tool-description">Loading tool description...</p>
+                    <p style="margin-top:10px;">Price per day: <span style="font-weight:700; color:#00ff99;" id="rent-daily-price">₹0</span></p>
+                </div>
+            </div>
+            <div class="rental-form">
+                <form id="rental-submission-form">
+                    <div class="form-group">
+                        <label for="rentDays">Number of Days to Rent:</label>
+                        <input type="number" id="rentDays" min="1" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userName">Your Name:</label>
+                        <input type="text" id="userName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Your Email:</label>
+                        <input type="email" id="userEmail" required>
+                    </div>
+                    <div class="calculation-summary">
+                        <div class="price-item">
+                            <span>Daily Rental Rate:</span>
+                            <span id="summary-daily-rate">₹0</span>
+                        </div>
+                        <div class="price-item">
+                            <span>Rental Days:</span>
+                            <span id="summary-days">1 Day</span>
+                        </div>
+                        <hr style="border-color:#0077ff;">
+                        <div class="price-item total-price">
+                            <span>TOTAL PRICE:</span>
+                            <span id="summary-total">₹0</span>
+                        </div>
+                    </div>
+                    <button type="submit" id="submit-rent">Confirm Rental & Pay</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || user.role !== 'user') {
+            alert('Please login as user first');
+            window.location.href = '/';
+        }
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        });
+        let selectedTool = null;
+        let dailyRate = 0;
+        function updatePrice() {
+            const daysInput = document.getElementById('rentDays');
+            let days = parseInt(daysInput.value) || 0;
+            if (days < 1 || isNaN(days)) {
+                days = 1;
+                daysInput.value = 1;
+            }
+            const totalPrice = days * dailyRate;
+            document.getElementById('summary-daily-rate').textContent = `₹${dailyRate.toLocaleString('en-IN')}`;
+            document.getElementById('summary-days').textContent = `${days} Day${days > 1 ? 's' : ''}`;
+            document.getElementById('summary-total').textContent = `₹${totalPrice.toLocaleString('en-IN')}`;
+            gsap.fromTo('#summary-total', { scale: 1.1, color: '#00dbde' }, { scale: 1, color: '#00ff99', duration: 0.2, overwrite: "auto" });
+        }
+        async function loadToolData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toolId = urlParams.get('id');
+            try {
+                const response = await fetch('/api/tools');
+                const tools = await response.json();
+                const tool = tools.find(t => t.id === toolId);
+                if (!tool) {
+                    document.querySelector('.container').innerHTML = '<h1>Error: Tool Not Found</h1><p>Please <a href="tools.html">go back to the tool list</a>.</p>';
+                    return;
+                }
+                selectedTool = tool;
+                dailyRate = tool.price;
+                document.getElementById('rent-tool-image').src = tool.beforeImage ? `/backend/uploads/before/${tool.beforeImage}` : 'https://via.placeholder.com/150x150/333/fff?text=' + tool.name;
+                document.getElementById('rent-tool-name').textContent = tool.name;
+                document.getElementById('rent-daily-price').textContent = `₹${tool.price.toLocaleString('en-IN')}`;
+                document.getElementById('rent-tool-description').textContent = tool.description;
+                updatePrice();
+                document.getElementById('rentDays').addEventListener('input', updatePrice);
+                document.getElementById('userEmail').value = user.email;
+            } catch (error) {
+                console.error('Error loading tool data:', error);
+                document.querySelector('.container').innerHTML = '<h1>Error Loading Tool</h1><p>Please try again later.</p>';
+            }
+        }
+        document.getElementById('rental-submission-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const days = document.getElementById('rentDays').value;
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const total = document.getElementById('summary-total').textContent;
+            if (!selectedTool) {
+                alert('Error: Tool information not loaded');
+                return;
+            }
+            const submitButton = document.getElementById('submit-rent');
+            submitButton.textContent = 'Processing...';
+            submitButton.disabled = true;
+            fetch('/api/rent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    toolId: selectedTool.id,
+                    userId: user.userId,
+                    userName: name,
+                    userEmail: email,
+                    rentDays: parseInt(days),
+                    totalPrice: parseFloat(total.replace('₹', '').replace(/,/g, ''))
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`✅ Rental Request Submitted!
+                    Tool: ${selectedTool.name}
+                    Renter: ${name}
+                    Email: ${email}
+                    Days: ${days}
+                    Total Cost: ${total}
+                    A confirmation email will be sent to ${email}.`);
+                    window.location.href = 'rented-tools.html';
+                } else {
+                    alert('Rental failed: ' + data.message);
+                    submitButton.textContent = 'Confirm Rental & Pay';
+                    submitButton.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Rental error: ' + error.message);
+                submitButton.textContent = 'Confirm Rental & Pay';
+                submitButton.disabled = false;
+            });
+        });
+        document.addEventListener('DOMContentLoaded', loadToolData);
+    </script>
+</body>
+</html>

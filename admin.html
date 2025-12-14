@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Tool Rental System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #00dbde;
+            --primary-dark: #00a8cc;
+            --secondary: #0077ff;
+            --accent: #00ff99;
+            --danger: #ff6b6b;
+            --warning: #ffa726;
+            --dark: #0a0e14;
+            --dark-light: #1a1f2e;
+            --text: #e0e0e0;
+            --text-muted: #888;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #0f1a2e 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        
+        /* Header Styles */
+        .admin-header {
+            background: rgba(10, 14, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 119, 255, 0.2);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            font-family: 'Exo 2', sans-serif;
+            color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--accent);
+        }
+        
+        .admin-nav {
+            display: flex;
+            gap: 20px;
+            margin-left: 30px;
+        }
+        
+        .nav-btn {
+            padding: 8px 16px;
+            background: transparent;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            color: white;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .logout-btn {
+            padding: 8px 16px;
+            background: linear-gradient(90deg, var(--danger), #ff8e8e);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            padding: 30px;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+        }
+        
+        .page-header h1 {
+            font-family: 'Exo 2', sans-serif;
+            color: var(--primary);
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        
+        /* Stats Cards */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--dark-light);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 219, 222, 0.2);
+        }
+        
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-change {
+            font-size: 0.8rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .dashboard-panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .panel {
+            background: var(--dark-light);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 119, 255, 0.1);
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 119, 255, 0.2);
+        }
+        
+        .panel-header h2 {
+            font-family: 'Exo 2', sans-serif;
+            color: var(--accent);
+            font-size: 1.4rem;
+        }
+        
+        .panel-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 119, 255, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(10, 14, 20, 0.8);
+            border: 1px solid rgba(0, 119, 255, 0.3);
+            border-radius: 5px;
+            color: var(--text);
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 219, 222, 0.2);
+        }
+        
+        .image-upload-area {
+            border: 2px dashed rgba(0, 119, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .image-upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(0, 119, 255, 0.05);
+        }
+        
+        .image-upload-area i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            border: 1px solid rgba(0, 119, 255, 0.3);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 119, 255, 0.2);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        
+        .data-table th {
+            background: rgba(10, 14, 20, 0.9);
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 119, 255, 0.1);
+            font-size: 0.9rem;
+        }
+        
+        .data-table tr:hover {
+            background: rgba(0, 119, 255, 0.05);
+        }
+        
+        /* Status Colors - Simple text styling */
+        .status-available {
+            color: var(--accent);
+            font-weight: 500;
+        }
+        
+        .status-rented {
+            color: var(--warning);
+            font-weight: 500;
+        }
+        
+        .status-out-of-stock {
+            color: var(--danger);
+            font-weight: 500;
+        }
+        
+        .status-needs-repair {
+            color: var(--warning);
+            font-weight: 500;
+        }
+        
+        .status-major-damage {
+            color: var(--danger);
+            font-weight: 500;
+        }
+        
+        .status-fraud {
+            color: #ff4444;
+            font-weight: 500;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .action-btn.edit {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .action-btn.delete {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .action-btn.repair {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .action-btn.remove {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .action-btn.view {
+            background: var(--accent);
+            color: var(--dark);
+        }
+        
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--dark-light);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 119, 255, 0.2);
+        }
+        
+        .modal-header h3 {
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--danger);
+        }
+        
+        .image-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .comparison-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 119, 255, 0.3);
+        }
+        
+        .image-label {
+            text-align: center;
+            color: var(--primary);
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        
+        .damage-info {
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid var(--danger);
+        }
+        
+        .damage-info h4 {
+            color: var(--danger);
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-panels {
+                grid-template-columns: 1fr;
+            }
+            
+            .image-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .header-left {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .admin-nav {
+                margin-left: 0;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <span>Rental Hub Admin</span>
+            </div>
+            <nav class="admin-nav">
+                <a href="#" class="nav-btn active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+                <a href="tools.html" class="nav-btn">
+                    <i class="fas fa-hammer"></i>
+                    Tools
+                </a>
+            </nav>
+        </div>
+        
+        <div class="header-right">
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div>
+                    <div style="font-weight: 600;">Admin User</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Administrator</div>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <h1>Admin Dashboard</h1>
+            <p>Manage tools and review returns</p>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="stats-cards">
+            <div class="stat-card">
+                <h3>Total Tools</h3>
+                <div class="stat-value" id="total-tools">0</div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>12% from last month</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Active Rentals</h3>
+                <div class="stat-value" id="active-rentals">0</div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>5% from last week</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Revenue</h3>
+                <div class="stat-value">₹12,540</div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>18% from last month</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Pending Returns</h3>
+                <div class="stat-value" id="pending-returns">0</div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>3% from last week</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Panels -->
+        <div class="dashboard-panels">
+            <!-- Tools Management Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Tools Management</h2>
+                    <div class="panel-actions">
+                        <button class="btn btn-primary" id="add-tool-btn">
+                            <i class="fas fa-plus"></i>
+                            Add Tool
+                        </button>
+                    </div>
+                </div>
+                
+                <form id="tool-management-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="toolId">Tool ID</label>
+                        <input type="text" id="toolId" class="form-control" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="toolName">Tool Name</label>
+                        <input type="text" id="toolName" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="toolPrice">Price (₹/day)</label>
+                            <input type="number" id="toolPrice" class="form-control" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="toolQuantity">Quantity</label>
+                            <input type="number" id="toolQuantity" class="form-control" min="1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Upload Tool Image</label>
+                        <div class="image-upload-area" id="image-upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <div>Click to upload or drag and drop</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">PNG, JPG, JPEG up to 5MB</div>
+                        </div>
+                        <input type="file" id="toolImage" accept="image/*" style="display: none;">
+                        <img id="tool-image-preview" class="image-preview" src="#" alt="Tool Preview">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="toolDescription">Description</label>
+                        <textarea id="toolDescription" class="form-control" rows="3"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" class="btn btn-primary" id="save-tool-btn">Save Tool</button>
+                        <button type="button" class="btn btn-outline" id="cancel-edit-btn">Cancel</button>
+                        <button type="button" class="btn" style="background: var(--danger); color: white; display: none;" id="delete-tool-btn">Delete</button>
+                    </div>
+                </form>
+                
+                <div class="table-container">
+                    <table class="data-table" id="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-tbody">
+                            <!-- Inventory will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Return Logs Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Return Logs</h2>
+                    <div class="panel-actions">
+                        <button class="btn btn-outline" id="refresh-logs-btn">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table" id="logs-table">
+                        <thead>
+                            <tr>
+                                <th>Tool</th>
+                                <th>User</th>
+                                <th>Damage</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-tbody">
+                            <!-- Logs will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Analytics Panel -->
+        <div class="panel" style="margin-top: 30px;">
+            <div class="panel-header">
+                <h2>Rental Analytics</h2>
+            </div>
+            <div class="chart-container">
+                <canvas id="rentalChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Return Details Modal -->
+    <div class="modal" id="return-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Return Details</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div id="modal-body">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || user.role !== 'admin') {
+            alert('Please login as admin first');
+            window.location.href = '/';
+        }
+
+        // DOM Elements
+        const logoutBtn = document.getElementById('logoutBtn');
+        const addToolBtn = document.getElementById('add-tool-btn');
+        const toolForm = document.getElementById('tool-management-form');
+        const saveToolBtn = document.getElementById('save-tool-btn');
+        const cancelEditBtn = document.getElementById('cancel-edit-btn');
+        const deleteToolBtn = document.getElementById('delete-tool-btn');
+        const refreshLogsBtn = document.getElementById('refresh-logs-btn');
+        const inventoryTbody = document.getElementById('inventory-tbody');
+        const logsTbody = document.getElementById('logs-tbody');
+        const imageUploadArea = document.getElementById('image-upload-area');
+        const toolImageInput = document.getElementById('toolImage');
+        const toolImagePreview = document.getElementById('tool-image-preview');
+        const modal = document.getElementById('return-details-modal');
+        const closeModal = document.getElementById('close-modal');
+        const modalBody = document.getElementById('modal-body');
+        const totalToolsEl = document.getElementById('total-tools');
+        const activeRentalsEl = document.getElementById('active-rentals');
+        const pendingReturnsEl = document.getElementById('pending-returns');
+
+        // Event Listeners
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        });
+
+        addToolBtn.addEventListener('click', function() {
+            toolForm.style.display = 'block';
+            clearForm();
+            addToolBtn.style.display = 'none';
+        });
+
+        cancelEditBtn.addEventListener('click', function() {
+            toolForm.style.display = 'none';
+            addToolBtn.style.display = 'block';
+            clearForm();
+        });
+
+        saveToolBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            saveTool();
+        });
+
+        deleteToolBtn.addEventListener('click', function() {
+            const toolId = document.getElementById('toolId').value;
+            if (toolId) {
+                deleteTool(toolId);
+            }
+        });
+
+        refreshLogsBtn.addEventListener('click', function() {
+            displayLogs();
+        });
+
+        // Image upload handling
+        imageUploadArea.addEventListener('click', function() {
+            toolImageInput.click();
+        });
+
+        imageUploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--primary)';
+            this.style.background = 'rgba(0, 119, 255, 0.1)';
+        });
+
+        imageUploadArea.addEventListener('dragleave', function() {
+            this.style.borderColor = 'rgba(0, 119, 255, 0.3)';
+            this.style.background = 'transparent';
+        });
+
+        imageUploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'rgba(0, 119, 255, 0.3)';
+            this.style.background = 'transparent';
+            
+            if (e.dataTransfer.files.length > 0) {
+                toolImageInput.files = e.dataTransfer.files;
+                previewImage(e.dataTransfer.files[0]);
+            }
+        });
+
+        toolImageInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                previewImage(e.target.files[0]);
+            }
+        });
+
+        // Modal handling
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Functions
+        function generateToolId(name) {
+            return name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+        }
+
+        function clearForm() {
+            document.getElementById('tool-management-form').reset();
+            document.getElementById('toolId').value = '';
+            document.getElementById('save-tool-btn').textContent = 'Add Tool';
+            deleteToolBtn.style.display = 'none';
+            toolImagePreview.style.display = 'none';
+            imageUploadArea.style.display = 'block';
+        }
+
+        function previewImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                toolImagePreview.src = event.target.result;
+                toolImagePreview.style.display = 'block';
+                imageUploadArea.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function loadDashboardStats() {
+            try {
+                const toolsResponse = await fetch('/api/tools');
+                const tools = await toolsResponse.json();
+                
+                const logsResponse = await fetch('/api/admin/logs');
+                const logs = await logsResponse.json();
+                
+                // Update stats
+                totalToolsEl.textContent = tools.length;
+                
+                const activeRentals = tools.reduce((sum, tool) => sum + tool.rented, 0);
+                activeRentalsEl.textContent = activeRentals;
+                
+                const pendingReturns = logs.filter(log => !log.action).length;
+                pendingReturnsEl.textContent = pendingReturns;
+                
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+
+        async function populateInventoryTable() {
+            try {
+                const response = await fetch('/api/tools');
+                const tools = await response.json();
+                
+                inventoryTbody.innerHTML = '';
+                
+                tools.forEach(tool => {
+                    let statusClass = 'status-available';
+                    let statusText = 'Available';
+                    
+                    if (tool.available === 0) {
+                        statusClass = 'status-out-of-stock';
+                        statusText = 'Out of Stock';
+                    } else if (tool.rented > 0) {
+                        statusClass = 'status-rented';
+                        statusText = 'Partially Rented';
+                    }
+                    
+                    const row = inventoryTbody.insertRow();
+                    row.innerHTML = `
+                        <td>
+                            <div style="font-weight: 600;">${tool.name}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">${tool.id}</div>
+                        </td>
+                        <td>₹${tool.price}/day</td>
+                        <td>${tool.available}/${tool.quantity}</td>
+                        <td class="${statusClass}">${statusText}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn edit" onclick="editTool('${tool.id}')">
+                                    <i class="fas fa-edit"></i>
+                                    Edit
+                                </button>
+                                <button class="action-btn delete" onclick="deleteTool('${tool.id}')">
+                                    <i class="fas fa-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                });
+                
+                // Animate rows
+                gsap.fromTo(inventoryTbody.querySelectorAll('tr'), 
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.5, stagger: 0.05 }
+                );
+                
+            } catch (error) {
+                console.error('Error loading inventory:', error);
+            }
+        }
+
+        async function editTool(toolId) {
+            try {
+                const response = await fetch(`/api/tools/${toolId}`);
+                const tool = await response.json();
+                
+                if (tool) {
+                    document.getElementById('toolId').value = tool.id;
+                    document.getElementById('toolName').value = tool.name;
+                    document.getElementById('toolPrice').value = tool.price;
+                    document.getElementById('toolQuantity').value = tool.quantity;
+                    document.getElementById('toolDescription').value = tool.description || '';
+                    
+                    // Show existing image if available
+                    if (tool.beforeImage) {
+                        toolImagePreview.src = `/uploads/before/${tool.beforeImage}`;
+                        toolImagePreview.style.display = 'block';
+                        imageUploadArea.style.display = 'none';
+                    }
+                    
+                    document.getElementById('save-tool-btn').textContent = 'Update Tool';
+                    deleteToolBtn.style.display = 'block';
+                    toolForm.style.display = 'block';
+                    addToolBtn.style.display = 'none';
+                    
+                    // Scroll to form
+                    toolForm.scrollIntoView({ behavior: 'smooth' });
+                }
+            } catch (error) {
+                console.error('Error fetching tool:', error);
+            }
+        }
+
+        async function saveTool() {
+            const formId = document.getElementById('toolId').value;
+            const name = document.getElementById('toolName').value.trim();
+            const price = parseFloat(document.getElementById('toolPrice').value);
+            const quantity = parseInt(document.getElementById('toolQuantity').value);
+            const description = document.getElementById('toolDescription').value.trim();
+            const imageFile = toolImageInput.files[0];
+
+            if (!name || isNaN(price) || isNaN(quantity) || quantity <= 0) {
+                alert("Please fill in valid data for all fields.");
+                return;
+            }
+
+            // If it's a new tool and no image is uploaded
+            if (!formId && !imageFile) {
+                alert("Please upload an image for the new tool.");
+                return;
+            }
+            
+            try {
+                let imageFilename = '';
+                
+                // Upload image if a new file is selected - USE SIMPLE FORM DATA
+                if (imageFile) {
+                    const imageFormData = new FormData();
+                    imageFormData.append('image', imageFile);
+                    imageFormData.append('toolId', formId || generateToolId(name));
+                    
+                    // Use a simple upload endpoint
+                    try {
+                        const uploadResponse = await fetch('/api/upload-tool-image', {
+                            method: 'POST',
+                            body: imageFormData
+                        });
+                        
+                        if (uploadResponse.ok) {
+                            const uploadData = await uploadResponse.json();
+                            imageFilename = uploadData.filename || imageFile.name;
+                        } else {
+                            // If upload endpoint doesn't exist, just use the filename
+                            imageFilename = imageFile.name;
+                        }
+                    } catch (uploadError) {
+                        // If upload fails, just use the filename
+                        imageFilename = imageFile.name;
+                        console.warn('Image upload failed, using filename:', imageFilename);
+                    }
+                }
+                
+                const toolData = {
+                    id: formId || generateToolId(name),
+                    name: name,
+                    price: price,
+                    quantity: quantity,
+                    beforeImage: imageFilename || (formId ? undefined : 'default-tool.jpg'),
+                    description: description || "Tool added by admin",
+                    specs: { power: "N/A", rpm: "N/A", weight: "N/A", condition: "New" }
+                };
+                
+                const response = await fetch('/api/admin/tools', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(toolData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(data.message);
+                    clearForm();
+                    toolForm.style.display = 'none';
+                    addToolBtn.style.display = 'block';
+                    populateInventoryTable();
+                    loadDashboardStats();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error saving tool:', error);
+                alert('Error saving tool: ' + error.message);
+            }
+        }
+
+        async function deleteTool(toolId) {
+            if (confirm(`Are you sure you want to permanently delete this tool?`)) {
+                try {
+                    const response = await fetch(`/api/admin/tools/${toolId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        alert('Tool deleted successfully');
+                        clearForm();
+                        toolForm.style.display = 'none';
+                        addToolBtn.style.display = 'block';
+                        populateInventoryTable();
+                        loadDashboardStats();
+                    } else {
+                        alert('Error deleting tool: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Error deleting tool:', error);
+                    alert('Error deleting tool');
+                }
+            }
+        }
+
+        async function displayLogs() {
+            try {
+                const response = await fetch('/api/admin/logs');
+                const logs = await response.json();
+                
+                logsTbody.innerHTML = '';
+                
+                logs.forEach(log => {
+                    let statusClass = 'status-available';
+                    let statusText = log.status;
+                    
+                    // Fix status classes - match the actual status values from server
+                    if (log.status === "Available" || log.status === "RETURNED_CLEAN") {
+                        statusClass = 'status-available';
+                        statusText = 'Available';
+                    } else if (log.status === "Needs Repair" || log.status.includes("Repair")) {
+                        statusClass = 'status-needs-repair';
+                        statusText = 'Needs Repair';
+                    } else if (log.status === "Major Damage" || log.status.includes("Damage")) {
+                        statusClass = 'status-major-damage';
+                        statusText = 'Major Damage';
+                    } else if (log.status === "Fraud Detected" || log.status.includes("Fraud") || log.status.includes("AI")) {
+                        statusClass = 'status-fraud';
+                        statusText = 'Fraud Detected';
+                    } else {
+                        statusClass = 'status-available';
+                        statusText = log.status;
+                    }
+                    
+                    const needsAction = !log.action && (log.status === 'Needs Repair' || log.status === 'Major Damage' || log.status === 'Fraud Detected' || log.status.includes("AI") || log.status.includes("Damage"));
+                    
+                    const row = logsTbody.insertRow();
+                    row.innerHTML = `
+                        <td>${log.toolName || 'Unknown Tool'}</td>
+                        <td>${log.userName || 'Unknown User'}</td>
+                        <td>
+                            <div style="font-weight: 600; color: ${log.damageScore > 70 ? 'var(--danger)' : log.damageScore > 20 ? 'var(--warning)' : 'var(--accent)'}">
+                                ${log.damageScore || 0}%
+                            </div>
+                            ${(log.aiDetected || log.aiConfidence > 50) ? '<div style="font-size: 0.8rem; color: var(--danger);">AI Suspected</div>' : ''}
+                        </td>
+                        <td class="${statusClass}">${statusText}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="action-btn view" onclick="viewReturnDetails('${log.id}')">
+                                    <i class="fas fa-eye"></i>
+                                    View
+                                </button>
+                                ${needsAction ? `
+                                    <button class="action-btn repair" onclick="adminAction('${log.id}', 'Repaired')">
+                                        <i class="fas fa-tools"></i>
+                                        Repaired
+                                    </button>
+                                    <button class="action-btn remove" onclick="adminAction('${log.id}', 'Remove')">
+                                        <i class="fas fa-trash"></i>
+                                        Remove
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </td>
+                    `;
+                });
+                
+                // Animate rows
+                gsap.fromTo(logsTbody.querySelectorAll('tr'), 
+                    { opacity: 0, x: 20 },
+                    { opacity: 1, x: 0, duration: 0.5, stagger: 0.05 }
+                );
+                
+            } catch (error) {
+                console.error('Error loading logs:', error);
+            }
+        }
+
+        async function viewReturnDetails(logId) {
+            try {
+                const response = await fetch('/api/admin/logs');
+                const logs = await response.json();
+                const log = logs.find(l => l.id == logId);
+                
+                if (!log) {
+                    alert('Return details not found');
+                    return;
+                }
+                
+                // Get tool details for before image
+                const toolResponse = await fetch('/api/tools');
+                const tools = await toolResponse.json();
+                const tool = tools.find(t => t.id === log.toolId);
+                
+                // Fix: Check if beforeImage exists and construct proper path
+                const beforeImageSrc = tool && tool.beforeImage ? 
+                    `/uploads/before/${tool.beforeImage}` : 
+                    'https://via.placeholder.com/400x300/1a1f2e/00dbde?text=NO+BEFORE+IMAGE';
+                
+                const afterImageSrc = log.afterImage ? 
+                    `/uploads/after/${log.afterImage}` : 
+                    'https://via.placeholder.com/400x300/1a1f2e/ff6b6b?text=NO+AFTER+IMAGE';
+                
+                modalBody.innerHTML = `
+                    <div class="image-comparison">
+                        <div>
+                            <img src="${beforeImageSrc}" alt="Before" class="comparison-image" onerror="this.src='https://via.placeholder.com/400x300/1a1f2e/00dbde?text=BEFORE+IMAGE+NOT+FOUND'">
+                            <div class="image-label">Before Rental</div>
+                        </div>
+                        <div>
+                            <img src="${afterImageSrc}" alt="After" class="comparison-image" onerror="this.src='https://via.placeholder.com/400x300/1a1f2e/ff6b6b?text=AFTER+IMAGE+NOT+FOUND'">
+                            <div class="image-label">After Return</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <h4 style="color: var(--primary); margin-bottom: 10px;">Tool Information</h4>
+                            <p><strong>Tool:</strong> ${log.toolName || 'Unknown'}</p>
+                            <p><strong>User:</strong> ${log.userName || 'Unknown'}</p>
+                            <p><strong>Rental ID:</strong> ${log.rentalId || 'N/A'}</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--primary); margin-bottom: 10px;">Assessment Results</h4>
+                            <p><strong>Damage Score:</strong> <span style="color: ${(log.damageScore || 0) > 70 ? 'var(--danger)' : (log.damageScore || 0) > 20 ? 'var(--warning)' : 'var(--accent)'}">${log.damageScore || 0}%</span></p>
+                            <p><strong>AI Detection:</strong> <span style="color: ${(log.aiDetected || log.aiConfidence > 50) ? 'var(--danger)' : 'var(--accent)'}">${log.aiDetected ? 'Yes' : 'No'} ${log.aiConfidence ? `(${log.aiConfidence}%)` : ''}</span></p>
+                            <p><strong>Status:</strong> ${log.status || 'Unknown'}</p>
+                        </div>
+                    </div>
+                    
+                    ${(log.damageScore || 0) > 20 ? `
+                    <div class="damage-info">
+                        <h4>Damage Assessment</h4>
+                        <p>This tool has been assessed with ${log.damageScore || 0}% damage. ${(log.damageScore || 0) > 70 ? 'Major repairs are required before this tool can be rented again.' : 'Minor repairs or maintenance is recommended.'}</p>
+                    </div>
+                    ` : ''}
+                    
+                    ${(log.aiDetected || log.aiConfidence > 50) ? `
+                    <div class="damage-info">
+                        <h4>AI Image Analysis</h4>
+                        <p>The returned image was flagged as potentially AI-generated or manipulated${log.aiConfidence ? ` with ${log.aiConfidence}% confidence` : ''}. Please verify the authenticity of the uploaded image.</p>
+                    </div>
+                    ` : ''}
+                    
+                    <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+                        ${!log.action ? `
+                        <button class="btn btn-primary" onclick="adminAction('${log.id}', 'Repaired')">
+                            <i class="fas fa-tools"></i>
+                            Mark as Repaired
+                        </button>
+                        <button class="btn" style="background: var(--danger); color: white;" onclick="adminAction('${log.id}', 'Remove')">
+                            <i class="fas fa-trash"></i>
+                            Remove from Stock
+                        </button>
+                        ` : '<p style="color: var(--accent);"><i class="fas fa-check"></i> This return has been resolved</p>'}
+                    </div>
+                `;
+                
+                modal.style.display = 'flex';
+                
+            } catch (error) {
+                console.error('Error loading return details:', error);
+                alert('Error loading return details');
+            }
+        }
+
+        async function adminAction(logId, action) {
+            try {
+                const response = await fetch('/api/admin/logs/action', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ logId: parseInt(logId), action: action })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`Action completed: ${action}`);
+                    modal.style.display = 'none';
+                    populateInventoryTable();
+                    displayLogs();
+                    loadDashboardStats();
+                } else {
+                    alert('Error performing action: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error performing admin action:', error);
+                alert('Error performing action');
+            }
+        }
+
+        // Initialize Rental Analytics Chart
+        function initRentalChart() {
+            const ctx = document.getElementById('rentalChart').getContext('2d');
+            const rentalChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Tools Rented',
+                        data: [12, 19, 15, 25, 22, 30],
+                        backgroundColor: 'rgba(0, 219, 222, 0.7)',
+                        borderColor: 'rgba(0, 219, 222, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Revenue (₹)',
+                        data: [4500, 7800, 6200, 10500, 9200, 12500],
+                        backgroundColor: 'rgba(0, 255, 153, 0.7)',
+                        borderColor: 'rgba(0, 255, 153, 1)',
+                        borderWidth: 1,
+                        type: 'line',
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Tools Rented'
+                            }
+                        },
+                        y1: {
+                            position: 'right',
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Revenue (₹)'
+                            },
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardStats();
+            populateInventoryTable();
+            displayLogs();
+            initRentalChart();
+            
+            // Add some animation to stats cards
+            gsap.fromTo('.stat-card', 
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 }
+            );
+        });
+    </script>
+</body>
+</html>
