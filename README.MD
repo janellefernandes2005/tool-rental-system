@@ -8,7 +8,7 @@ A tool rental management system with AI image verification.
 3. Open: http://localhost:3000
 
 ## Login
-- Admin: admin@rentalhub.com / admin123
+- Admin
 - Users: Register new accounts
 
 ## Features
